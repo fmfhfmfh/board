@@ -23,7 +23,7 @@ public class ConnectionPoolServlet extends HttpServlet{
 		BasicDataSource bd = new BasicDataSource();
 		bd.setDriverClassName("oracle.jdbc.driver.OracleDriver");
 		bd.setUrl("jdbc:oracle:thin:@localhost:1521/xe");
-		bd.setUsername("pkh");
+		bd.setUsername("park_board");
 		bd.setPassword("java");
 		bd.setInitialSize(20);
 		

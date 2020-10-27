@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board_type">
+  <insert id="board_type_insert" parameterType="Board_TypeVO" >
+  	INSERT INTO BOARDTYPE VALUES(#{board_name}, #{board_use_check}, BOARD_TYPE_SEQ.NEXTVAL)
+  </insert>
+ 
+  <select id="get_board_type" resultType="Board_TypeVO">
+  	SELECT * FROM BOARDTYPE
+  </select>	
+  
+  <select id="select_board_type" resultType="Board_TypeVO" parameterType="int"> 
+  	SELECT * FROM BOARDTYPE where board_type_no = #{board_type_no}
+  </select>
+  
+  <update id="board_type_update" parameterType="Board_TypeVO">
+  	UPDATE BOARDTYPE SET BOARD_NAME = #{board_name}, BOARD_USE_CHECK = #{board_use_check} where BOARD_TYPE_NO = #{board_type_no}
+  </update>
+ 
+ 
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="board">  
+
+ <select id="selectBoardPageList" resultType="BoardVO" parameterType="PageVO">
+	
+ 
+  	SELECT * FROM 
+	(SELECT ROWNUM AS RN,
+	       A.*
+	  FROM (select	 BOARD_TYPE_NO,
+      		 LEVEL BOARDLEVEL,
+     		 BOARD_NO,
+      		 BOARD_GROUP_NO,
+       	     CASE WHEN LEVEL = 1 THEN '' ELSE LPAD('→ ', LEVEL*2, '―') END ||
+      		 CASE WHEN BOARD_DEL_CHECK = '1' THEN '**삭제된 게시글입니다**'  ELSE BOARD_TITLE END BOARD_TITLE,
+    	     USER_ID,
+      		 BOARD_DEL_CHECK,
+     		 BOARD_DATE
+	FROM(select * from board where BOARD_TYPE_NO = #{board_type_no})
+	START WITH  BOARD_GROUP_NO is null
+	CONNECT BY PRIOR BOARD_NO = BOARD_GROUP_NO 
+	ORDER SIBLINGS BY BOARD_NO) A)
+	 WHERE RN BETWEEN (#{page} - 1) * #{pageSize} + 1 AND #{page} * #{pageSize}
+  </select>
+  
+  <select id="selectBoardTotalCnt" parameterType="int" resultType="int">
+  	SELECT count(*) FROM board where board_type_no = #{board_type_no}
+  </select>
+  
+  <select id="getBoard" parameterType="int" resultType="BoardVO">
+  	select * from board where board_no = #{board_no}
+  </select>
+  
+  <select id="selectAllBoard" resultType="BoardVO">
+  	select * from board
+  </select>
+  
+  <insert id="insertBoard" parameterType="BoardVO">
+  	insert into board values(BOARD_SEQ.NEXTVAL, #{board_title}, sysdate, #{board_del_check}, #{user_id}, null, #{board_type_no}, #{board_content})
+  </insert>
+  
+  <insert id="insertGBoard" parameterType="BoardVO">
+  	insert into board values(BOARD_SEQ.NEXTVAL, #{board_title}, sysdate, #{board_del_check}, #{user_id}, #{board_group_no}, #{board_type_no}, #{board_content})
+  </insert>
+  
+  <update id="updateBoard" parameterType="BoardVO">
+    update board set board_title = #{board_title}, board_content = #{board_content} where board_no = #{board_no}
+  </update>
+  
+  <update id="board_del_check" parameterType="int">
+   update board set board_del_check = 1 where board_no = #{board_no}
+  </update>
+  
+</mapper>  

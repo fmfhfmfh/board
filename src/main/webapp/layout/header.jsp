@@ -12,8 +12,8 @@
 			</button>
 <!-- 			접속을 안했을 때 :        ==> [] -->
 <!-- 			접속을 했을 때 : [brown] ==> [brown]  -->
-			<a class="navbar-brand" href="#">JSP/SPRING
-					<c:if test="${S_MEMBER.userid != null}">[${S_MEMBER.userid}]</c:if>
+			<a class="navbar-brand" href="#">Board
+					<c:if test="${S_MEMBER.user_id != null}">[${S_MEMBER.user_id}]</c:if>
 			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
@@ -22,7 +22,6 @@
 	            <li><a href="#">Settings</a></li>
 	            <li><a href="#">Profile</a></li>
 	            <li><a href="#">Help</a></li>
-	            <li><a href="${cp}/logout">LogOut</a></li>
          	</ul>
 			<form class="navbar-form navbar-right">
 				<input type="text" class="form-control" placeholder="Search...">

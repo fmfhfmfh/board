@@ -1,4 +1,4 @@
-package files;
+package files.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,10 +21,10 @@ import org.slf4j.LoggerFactory;
 
 @WebServlet("/fileUpload")
 @MultipartConfig(maxFileSize = 1024*1024*5, maxRequestSize = 1024*1024*26)
-public class FileUploadServlet extends HttpServlet {
+public class FilesUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadServlet.class);
+	private static final Logger logger = LoggerFactory.getLogger(FilesUploadServlet.class);
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		logger.debug("get request.getContextType() : {}", request.getContentType());
@@ -54,7 +54,7 @@ public class FileUploadServlet extends HttpServlet {
 		logger.debug("getContentType() : {}", imgPart.getContentType());
 		logger.debug("content-Disposition : {}", imgPart.getHeader("Content-Disposition"));
 		
-		String fileName = FileUploadUtil.getFileName(imgPart.getHeader("Content-Disposition"));
+		String fileName = FilesUploadUtil.getFileName(imgPart.getHeader("Content-Disposition"));
 		
 		imgPart.write("d:\\upload\\" + fileName);
 		imgPart.delete();

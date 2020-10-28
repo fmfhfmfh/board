@@ -25,17 +25,38 @@
 		$("#delbutton").on("click", function(){
 			document.location="boardDelete?board_no=${bv.board_no}";
 		});
+
 	
-// 		$("#profileDownBtn").on("click", function(){
-// 			document.location="/profileDownload?userid=${mv.userid}";
-// 		});
+		$("button[id^=fileDownBtn]").on("click", function(){
+			files_no = $(this).val();
+			document.location="fileDownload?board_no=${bv.board_no}&files_no="+files_no;
+		});
 		
-// 		$("#replybutton").on("click", function(){
-// 			document.location="replyInsert?board_no=${bv.board_no}";
-// 		});
+		$("button[id^=re_del_check]").on("click", function(){
+			reply_no = $(this).val();
+			document.location="replyDelete?board_no=${bv.board_no}&reply_no="+reply_no;
+		});
+		
 		$("#gbutton").on("click", function(){
 			document.location="boardGInsert?board=${bv.board_type_no}&board_no=${bv.board_no}";
 		});
+
+	
+		 
+		$('textarea').keyup(function() {
+
+		    var content = $(this).val();
+		    $('#counter').html("("+content.length+" / 최대 500자)");    //글자수 실시간 카운팅
+
+		    if (content.length > 500){
+		        alert("최대 500자까지 입력 가능합니다.");
+		        $(this).val(content.substring(0, 200));
+		        $('#counter').html("(200 / 최대 500자)");
+		    }
+
+		});
+
+		
 
 	});
 </script>
@@ -95,15 +116,6 @@
 					</div>
 					
 					<div class="form-group">
-						<label for="pass" class="col-sm-2 control-label">댓글</label>
-						<c:forEach items="${rv}" var="rv">
-						<div class="col-sm-10">
-							<label class="control-label" >${rv.reply_content}</label>
-						</div>
-						</c:forEach>
-					</div>
-					
-					<div class="form-group">
 						<label for="pass" class="col-sm-2 control-label">작성 날짜</label>
 						<div class="col-sm-10">
 							<label class="control-label" ><fmt:formatDate value="${bv.board_date}" pattern="yyyy-MM-dd"/></label>
@@ -116,28 +128,52 @@
 							<label class="control-label" >${bv.user_id}</label>
 						</div>
 					</div>
-					<div hidden="true" class="form-group">
-						<label for="pass" class="col-sm-2 control-label">게시판종류</label>
-						<div class="col-sm-10">
-							<label class="control-label" >${bv.board_type_no}</label>
-						</div>
-					</div>
 					
-					<div hidden="true" class="form-group">
-						<label for="pass" class="col-sm-2 control-label">답글번호</label>
-						<div class="col-sm-10">
-							<label class="control-label" >${bv.board_group_no}</label>
-						</div>
-					</div>
-					
+					<c:forEach items="${fv}" var="fv">
 					<div class="form-group">
 						<label for="pass" class="col-sm-2 control-label">첨부파일</label>
-						<div class="col-sm-10">
-							<label class="control-label" >${bv.board_group_no}</label>
+						<button id="fileDownBtn" type="button" class="btn btn-default" value="${fv.files_no}">${fv.real_files_name}</button>
+					</div>
+					</c:forEach>
+					
+					<c:if test="${S_MEMBER.user_id != bv.user_id}">
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="button" id="gbutton" class="btn btn-default" >답글쓰기</button>
 						</div>
 					</div>
+					</c:if>	
 					
-
+					<hr>
+					<h1>댓글</h1>
+						<c:forEach items="${rv}" var="rv">
+						<div style="width:auto; height:auto;" id="re" class="form-group">
+						<hr>
+						<input data-reply_no="${rv.reply_no}" type=hidden name="reply_no" value="${rv.reply_no}">
+						<input type=hidden name="board_no" value="${bv.board_no}">
+						<table>
+							<tr>
+								<td>
+									<label class="control-label" >${rv.reply_content}&emsp;&emsp;&emsp;</label>
+								</td>
+								
+								<td>
+									<label class="control-label" ><fmt:formatDate value="${rv.reply_date}" pattern="yyyy-MM-dd"/>&emsp;&emsp;&emsp;</label>
+								</td>
+								<td>
+									<label class="control-label" >${rv.user_id}&emsp;&emsp;</label>
+								</td>
+								<c:if test="${S_MEMBER.user_id == rv.user_id && rv.reply_del_check == '0'}">
+								<td>
+									<button style="float:right;" type="button" id="re_del_check" value="${rv.reply_no}">댓글삭제</button> 
+								</td>
+								</c:if>
+							</tr>	
+						</table>
+						</div>
+						</c:forEach>
+					
+				
 					<c:if test="${S_MEMBER.user_id == bv.user_id }">
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
@@ -165,19 +201,31 @@
 							</div>
 						</div>
 
+<br>
 						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<input type=text name="reply_content" style="width:300px; height:100px;">
+							<div>
+								<textarea name="reply_content" style="width:700px; height:100px; resize:none;" ></textarea>
+								<br>
+								<span style="color:#aaa;" id="counter">(0 / 최대 500자)</span>
 								<button type="submit" id="replybutton" class="btn btn-default" >댓글작성</button>
 							</div>
 						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" id="gbutton" class="btn btn-default" >답글쓰기</button>
-							</div>
-						</div>
+						
 					</c:if>
 				</form>	
+					<div hidden="true" class="form-group">
+						<label for="pass" class="col-sm-2 control-label">게시판종류</label>
+						<div class="col-sm-10">
+							<label class="control-label" >${bv.board_type_no}</label>
+						</div>
+					</div>
+					
+					<div hidden="true" class="form-group">
+						<label for="pass" class="col-sm-2 control-label">답글번호</label>
+						<div class="col-sm-10">
+							<label class="control-label" >${bv.board_group_no}</label>
+						</div>
+					</div>
 			</div>
 		</div>
 	</div>

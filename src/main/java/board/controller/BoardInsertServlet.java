@@ -1,12 +1,15 @@
 package board.controller;
 
 import java.io.IOException;
+import java.util.UUID;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,10 @@ import org.slf4j.LoggerFactory;
 import board.model.BoardVO;
 import board.service.BoardService;
 import board.service.BoardServiceI;
+import files.controller.FilesUploadUtil;
+import files.model.FilesVO;
+import files.service.FilesService;
+import files.service.FilesServiceI;
 
 @WebServlet("/boardInsert")
 @MultipartConfig
@@ -22,10 +29,12 @@ public class BoardInsertServlet extends HttpServlet {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardInsertServlet.class);
 	private BoardServiceI boardService;
+	private FilesServiceI filesService;
 	BoardVO bv;
 	@Override
 	public void init() throws ServletException {
 		boardService = new BoardService();
+		filesService = new FilesService();
 	}
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -59,13 +68,36 @@ public class BoardInsertServlet extends HttpServlet {
 		
 		int cnt = boardService.insertBoard(bv);
 		
-		if(cnt == 1) {
+		int count = Integer.parseInt(request.getParameter("count"));
+		
+		for(int i = 1; i <= count; i++) {
+			
+			Part files = request.getPart("realfilename"+i);
+			
+			String real_files_name = FilesUploadUtil.getFileName(files.getHeader("Content-Disposition"));
+			String ext = FilesUploadUtil.getExtension(real_files_name);
+			String fileName = UUID.randomUUID().toString();
+			String filePath = "";
+			
+			
+			if (files.getSize() > 0) {
+				filePath = "D:\\profile\\" + fileName + "." + ext;
+				files.write(filePath);
+				
+				FilesVO fv = new FilesVO();
+				
+				fv.setFiles_name(filePath);
+				fv.setReal_files_name(real_files_name);
+				fv.setBoard_no(cnt);
+				filesService.insertFiles(fv);
+			}
+			
+		}
+		if(cnt > 0) {
 			response.sendRedirect(request.getContextPath() + "/boardList?board="+board_type_no);
 		}else {
 			doGet(request, response);
 		}
-		
-	
 		
 	}
 }

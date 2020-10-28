@@ -31,6 +31,8 @@ public class ReplyInsertServlet extends HttpServlet {
        
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		
 		int board_no = Integer.parseInt(request.getParameter("board_no"));
 		String reply_content = request.getParameter("reply_content");
 		String user_id = request.getParameter("user_id");

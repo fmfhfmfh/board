@@ -1,4 +1,4 @@
-package files;
+package files.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FileUploadUtil {
+public class FilesUploadUtil {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FileUploadUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(FilesUploadUtil.class);
 	// form-data; name="img"; filename="5.png"
 	// ==> 5.png
 	

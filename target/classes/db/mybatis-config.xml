@@ -8,6 +8,7 @@
 		<typeAlias type="board_type.model.Board_TypeVO" alias="Board_TypeVO"/>
 		<typeAlias type="board.model.BoardVO" alias="BoardVO"/>
 		<typeAlias type="reply.model.ReplyVO" alias="ReplyVO"/>
+		<typeAlias type="files.model.FilesVO" alias="FilesVO"/>
 		<typeAlias type="common.model.PageVO" alias="PageVO"/>
 		
 	</typeAliases>
@@ -27,5 +28,6 @@
     <mapper resource="db/mapper/BoardType.xml"/>
     <mapper resource="db/mapper/Board.xml"/>
     <mapper resource="db/mapper/Reply.xml"/>
+    <mapper resource="db/mapper/Files.xml"/>
   </mappers>
 </configuration>

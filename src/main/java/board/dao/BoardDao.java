@@ -57,7 +57,7 @@ public class BoardDao implements BoardDaoI{
 
 		}
 		
-		if(cnt == 1) {
+		if(cnt > 0) {
 			session.commit();
 		}else {
 			session.rollback();
@@ -65,7 +65,7 @@ public class BoardDao implements BoardDaoI{
 		
 		session.close();
 		
-		return cnt;
+		return bv.getBoard_no();
 	}
 	
 	@Override

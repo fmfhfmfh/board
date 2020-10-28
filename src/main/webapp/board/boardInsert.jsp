@@ -30,12 +30,25 @@
 
 // 	});
   	$(document).ready(function() {
+	 var count = 0;
         $('.summernote').summernote({
 	        width : 500,
 			height: 300,
 	        lang: "ko-KR"
         });
+        
+	  	$('#fileAddBtn').on('click', function(){
+	        if(count >= 5){
+	       	   alert("첨부파일은 5개까지 등록가능합니다")
+	           return;
+	        }
+	        count++
+	        $('#fileup').append("&nbsp;&nbsp;<input type='file' name='realfilename"+count+"'>")
+	        $('#count').val(count)
+	    })
     });
+
+      
    
 </script>
 
@@ -70,9 +83,12 @@
 					
 					<div class="form-group">
 						<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
-						<div class="col-sm-10">
-							<input  multiple="multiple"type="file" name="realfilename"/>
+						<button type="button" id="fileAddBtn">파일추가</button>
+						<br>
+						<div class="col-sm-10" id="fileup" class="col-sm-10">
 						</div>
+						<input id="count" name="count" type="hidden" value="0">
+						<br>
 					</div>
 					
 					<div class="form-group">

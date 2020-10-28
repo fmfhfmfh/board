@@ -5,7 +5,22 @@
   
   
 <mapper namespace="reply">  
-	<insert id="insertReply">
+	<insert id="insertReply" parameterType="ReplyVO">
 		insert into reply values(REPLY_SEQ.NEXTVAL, SYSDATE, #{reply_content}, '0', #{user_id}, #{board_no})
 	</insert>
+	
+	<select id="getAllReply" parameterType="int" resultType="ReplyVO">
+		select reply_no, reply_date,
+		case when reply_del_check = '1' then '**삭제된 댓글입니다**' 
+		else reply_content end reply_content,
+		reply_del_check,
+		user_id,
+		board_no
+		from reply
+		where board_no = #{board_no}
+	</select>
+	
+	<delete id="deleteReply" parameterType="int">
+		update reply set reply_del_check = '1' where reply_no = #{reply_no}
+	</delete>
 </mapper>  

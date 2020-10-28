@@ -76,6 +76,13 @@
 		<a class="btn btn-default pull-right" href="${pageContext.request.contextPath}/boardInsert?board=${board_type_no}">게시글 등록</a>
 		<div class="text-center">
 			<ul class="pagination">
+				<c:choose>
+					<c:when test="${page != 0 && page != 1}">
+						  <li><a href="${pageContext.request.contextPath }/boardList?board=${board_type_no}&page=${1}"><<</a></li>
+						  <li><a href="${pageContext.request.contextPath }/boardList?board=${board_type_no}&page=${page-1}"><</a></li>
+					</c:when>
+				</c:choose>
+				
 				<c:forEach var="i" begin="1" end="${pages}">
 					<c:choose>
 						<c:when test="${i == page}">
@@ -85,7 +92,14 @@
 							<li><a href="${pageContext.request.contextPath }/boardList?board=${board_type_no}&page=${i}">${i}</a></li>
 						</c:otherwise>
 					</c:choose>	
-				</c:forEach>	
+				</c:forEach>
+				
+				<c:choose>
+					<c:when test="${page != pages}">
+						  <li><a href="${pageContext.request.contextPath }/boardList?board=${board_type_no}&page=${page+1}">></a></li>
+						  <li><a href="${pageContext.request.contextPath }/boardList?board=${board_type_no}&page=${pages}">>></a></li>
+					</c:when>
+				</c:choose> 	
 			</ul>
 		</div>
 	</div>

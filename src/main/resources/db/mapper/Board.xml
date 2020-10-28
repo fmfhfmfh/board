@@ -24,7 +24,7 @@
 	FROM(select * from board where BOARD_TYPE_NO = #{board_type_no})
 	START WITH  BOARD_GROUP_NO is null
 	CONNECT BY PRIOR BOARD_NO = BOARD_GROUP_NO 
-	ORDER SIBLINGS BY BOARD_NO) A)
+	ORDER SIBLINGS BY BOARD_NO DESC) A)
 	 WHERE RN BETWEEN (#{page} - 1) * #{pageSize} + 1 AND #{page} * #{pageSize}
   </select>
   
@@ -41,7 +41,12 @@
   </select>
   
   <insert id="insertBoard" parameterType="BoardVO">
-  	insert into board values(BOARD_SEQ.NEXTVAL, #{board_title}, sysdate, #{board_del_check}, #{user_id}, null, #{board_type_no}, #{board_content})
+  <selectKey keyProperty="board_no" resultType="int">
+  	select BOARD_SEQ.CURRVAL FROM DUAL
+  </selectKey>
+  	insert into board values(BOARD_SEQ.NEXTVAL, #{board_title}, sysdate, 
+  	#{board_del_check}, #{user_id}, null, #{board_type_no}, 
+  	#{board_content})
   </insert>
   
   <insert id="insertGBoard" parameterType="BoardVO">

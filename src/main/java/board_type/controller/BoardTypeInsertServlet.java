@@ -52,7 +52,7 @@ public class BoardTypeInsertServlet extends HttpServlet {
 		logger.debug("cnt : {}", cnt);
 		
 		if (cnt == 1) {
-			request.getRequestDispatcher("/home/main.jsp").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/boardTypeInsert");
 		}else {
 			doGet(request, response);
 		}

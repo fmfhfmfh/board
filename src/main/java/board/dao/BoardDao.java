@@ -34,7 +34,7 @@ public class BoardDao implements BoardDaoI{
 	}
 	
 	@Override
-	public List<MemberVO> selectBoardPageList(SqlSession sqlSession, PageVO pv) {
+	public List<BoardVO> selectBoardPageList(SqlSession sqlSession, PageVO pv) {
 		
 		return sqlSession.selectList("board.selectBoardPageList", pv);
 	}

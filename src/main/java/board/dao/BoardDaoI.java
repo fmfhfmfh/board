@@ -6,14 +6,13 @@ import org.apache.ibatis.session.SqlSession;
 
 import board.model.BoardVO;
 import common.model.PageVO;
-import member.model.MemberVO;
 
 public interface BoardDaoI {
 	BoardVO getboard(int board_no);
 	
 	List<BoardVO> selectAllBoard();
 	
-	List<MemberVO> selectBoardPageList(SqlSession sqlSession, PageVO pv);
+	List<BoardVO> selectBoardPageList(SqlSession sqlSession, PageVO pv);
 	
 	int selectBoardTotalCnt(SqlSession sqlSession, int board_type_no);
 	

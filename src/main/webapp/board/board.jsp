@@ -136,13 +136,24 @@
 					</div>
 					</c:forEach>
 					
-					<c:if test="${S_MEMBER.user_id != bv.user_id}">
+					<c:if test="${S_MEMBER.user_id == bv.user_id }">
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="button" id="upbutton" class="btn btn-default" >게시글수정</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="button" id="delbutton" class="btn btn-default" >게시글삭제</button>
+							</div>
+						</div>
+					</c:if>
+					
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
 							<button type="button" id="gbutton" class="btn btn-default" >답글쓰기</button>
 						</div>
 					</div>
-					</c:if>	
 					
 					<hr>
 					<h1>댓글</h1>
@@ -163,7 +174,7 @@
 								<td>
 									<label class="control-label" >${rv.user_id}&emsp;&emsp;</label>
 								</td>
-								<c:if test="${S_MEMBER.user_id == rv.user_id && rv.reply_del_check == '0'}">
+								<c:if test="${rv.reply_del_check == '0'}">
 								<td>
 									<button style="float:right;" type="button" id="re_del_check" value="${rv.reply_no}">댓글삭제</button> 
 								</td>
@@ -174,21 +185,10 @@
 						</c:forEach>
 					
 				
-					<c:if test="${S_MEMBER.user_id == bv.user_id }">
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" id="upbutton" class="btn btn-default" >게시글수정</button>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" id="delbutton" class="btn btn-default" >게시글삭제</button>
-							</div>
-						</div>
-					</c:if>
+				
 				</form>
 				<form method="post" action="${cp}/replyInsert">
-					<c:if test="${S_MEMBER.user_id != bv.user_id }">
+					
 					
 						<div class="form-group">
 							<div class="col-sm-10">
@@ -211,7 +211,7 @@
 							</div>
 						</div>
 						
-					</c:if>
+					
 				</form>	
 					<div hidden="true" class="form-group">
 						<label for="pass" class="col-sm-2 control-label">게시판종류</label>

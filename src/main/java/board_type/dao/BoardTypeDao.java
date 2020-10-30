@@ -44,6 +44,7 @@ public class BoardTypeDao implements BoardTypeDaoI {
 		
 		return list;
 	}
+	
 	@Override
 	public Board_TypeVO selectBoardType(int board_type_no) {
 		SqlSession session = MybatisUtil.getSession();
